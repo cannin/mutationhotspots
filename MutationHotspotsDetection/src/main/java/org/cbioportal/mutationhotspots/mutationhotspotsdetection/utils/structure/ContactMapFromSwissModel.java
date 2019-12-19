@@ -113,8 +113,14 @@ public class ContactMapFromSwissModel implements ProteinStructureContactMapCalcu
 
         JsonNode root;
         try {
-            URL url = new URL("https://swissmodel.expasy.org/repository/uniprot/"+uniprotAcc+".json?provider=swissmodel");
-            root = mapper.readTree(url);
+            if (System.getenv("PDB_MODE").equals("CUSTOM")) {
+                System.out.println("Custom protein structure");
+                URL url = new URL("http://127.0.0.1:8000/json/"+uniprotAcc+".json");
+                root = mapper.readTree(url);
+            } else {
+                URL url = new URL("https://swissmodel.expasy.org/repository/uniprot/"+uniprotAcc+".json?provider=swissmodel");
+                root = mapper.readTree(url);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ContactMapFromSwissModel.class.getName()).log(Level.SEVERE, null, ex);
             return Collections.emptyList();

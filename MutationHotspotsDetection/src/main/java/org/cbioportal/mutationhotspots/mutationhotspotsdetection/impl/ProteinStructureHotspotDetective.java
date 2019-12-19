@@ -55,11 +55,13 @@ public class ProteinStructureHotspotDetective extends AbstractHotspotDetective {
         int[] counts = getMutationCountsOnProtein(mapResidueHotspot, protein.getLength());
         
         Map<SortedSet<Integer>,Set<Hotspot>> mapResiduesHotspots3D = new HashMap<>();
-        Map<MutatedProtein3D,ContactMap> contactMaps = ProteinStructureContactMapCalculator.getPDBCalculator().getContactMaps(protein,
+        Map<MutatedProtein3D,ContactMap> contactMaps = ProteinStructureContactMapCalculator.getSwissModelCalculator().getContactMaps(protein,
                 parameters.getIdentpThresholdFor3DHotspots(), parameters.getDistanceClosestAtomsThresholdFor3DHotspots());
-        contactMaps.putAll(ProteinStructureContactMapCalculator.getSwissModelCalculator().getContactMaps(protein,
-                parameters.getIdentpThresholdFor3DHotspots(), parameters.getDistanceClosestAtomsThresholdFor3DHotspots()));
-        
+        if (System.getenv("ALL_PDB").equals("TRUE")) {
+            contactMaps.putAll(ProteinStructureContactMapCalculator.getPDBCalculator().getContactMaps(protein,
+            parameters.getIdentpThresholdFor3DHotspots(), parameters.getDistanceClosestAtomsThresholdFor3DHotspots()));
+        }
+
         int i = 0;
         for (Map.Entry<MutatedProtein3D, ContactMap> entryContactMaps : contactMaps.entrySet()) {
             MutatedProtein3D protein3D = entryContactMaps.getKey();
