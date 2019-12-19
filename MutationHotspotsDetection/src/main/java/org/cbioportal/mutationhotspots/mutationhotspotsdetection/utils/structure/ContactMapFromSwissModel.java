@@ -166,8 +166,14 @@ public class ContactMapFromSwissModel implements ProteinStructureContactMapCalcu
         Map<Integer, Set<Integer>> map = new HashMap<>();
         try {
             PDBFileReader reader = new PDBFileReader();
-            URL url = new URL(strUrl);
-            Structure structure = reader.getStructure(url.openStream());
+            Structure structure;
+            if (System.getenv("PDB_URL").equals("LOCAL")) {
+                FileInputStream fis = new FileInputStream(strUrl);
+                structure = reader.getStructure(fis);
+            } else {
+                URL url = new URL(strUrl);
+                structure = reader.getStructure(url.openStream());
+            }
 //            FileInputStream fis = new FileInputStream("/Users/jgao/projects/mutationhotspots/process/akt/3o96.pdb");
 //            Structure structure = reader.getStructure(fis);
 
