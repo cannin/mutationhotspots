@@ -115,7 +115,7 @@ public class ContactMapFromSwissModel implements ProteinStructureContactMapCalcu
         try {
             if (System.getenv("PDB_MODE").equals("CUSTOM")) {
                 System.out.println("Custom protein structure");
-                URL url = new URL("http://127.0.0.1:8000/json/"+uniprotAcc+".json");
+                URL url = new URL(System.getenv("JSON_URL")+uniprotAcc+".json");
                 root = mapper.readTree(url);
             } else {
                 URL url = new URL("https://swissmodel.expasy.org/repository/uniprot/"+uniprotAcc+".json?provider=swissmodel");
